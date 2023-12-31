@@ -1,0 +1,18 @@
+import { blogRotuer } from '~/server/api/routers/blogs';
+import { blogCommentRouter } from '~/server/api/routers/blog-comments';
+import { createTRPCRouter } from '~/server/api/trpc';
+import { tagRouter } from './routers/tags';
+
+/**
+ * This is the primary router for your server.
+ *
+ * All routers added in /api/routers should be manually added here.
+ */
+export const appRouter = createTRPCRouter({
+  blogs: blogRotuer,
+  blogComments: blogCommentRouter,
+  tags: tagRouter,
+});
+
+// export type definition of API
+export type AppRouter = typeof appRouter;

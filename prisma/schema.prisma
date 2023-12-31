@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id             String        @id @default(cuid())
+    socialId       String
+    socialType     String
+    userRoles      UserRole[]
+    blogComments   BlogComment[]
+    createdAt      DateTime      @default(now())
+    lastModifiedAt DateTime      @updatedAt
+}
+
+model Role {
+    id              String           @id @default(cuid())
+    name            String
+    userRoles       UserRole[]
+    rolePermissions RolePermission[]
+    createdAt       DateTime         @default(now())
+    lastModifiedAt  DateTime         @updatedAt
+}
+
+model Permission {
+    id              String           @id @default(cuid())
+    name            String
+    rolePermissions RolePermission[]
+    createdAt       DateTime         @default(now())
+    lastModifiedAt  DateTime         @updatedAt
+}
+
+model RolePermission {
+    id             String     @id @default(cuid())
+    permission     Permission @relation(fields: [permissionId], references: [id])
+    permissionId   String
+    role           Role       @relation(fields: [roleId], references: [id])
+    roleId         String
+    createdAt      DateTime   @default(now())
+    lastModifiedAt DateTime   @updatedAt
+}
+
+model UserRole {
+    id             String   @id @default(cuid())
+    user           User     @relation(fields: [userId], references: [id])
+    userId         String
+    role           Role     @relation(fields: [roleId], references: [id])
+    roleId         String
+    createdAt      DateTime @default(now())
+    lastModifiedAt DateTime @updatedAt
+}
+
+model Blog {
+    id        String        @id @default(cuid())
+    title     String
+    body      String
+    comments  BlogComment[]
+    blogTags  BlogTag[]
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+}
+
+model Tag {
+    id        String    @id @default(cuid())
+    name      String
+    blogTags  BlogTag[]
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+model BlogComment {
+    id        String        @id @default(cuid())
+    body      String
+    user      User          @relation(fields: [userId], references: [id])
+    userId    String
+    post      Blog          @relation(fields: [postId], references: [id])
+    postId    String
+    replyTo   BlogComment?  @relation("ReplyTo", fields: [replyToId], references: [id])
+    replyToId String?
+    replies   BlogComment[] @relation("ReplyTo")
+    createdAt DateTime      @default(now())
+    updatedAt DateTime      @updatedAt
+}
+
+model BlogTag {
+    id             String   @id @default(cuid())
+    blog           Blog     @relation(fields: [blogId], references: [id])
+    blogId         String
+    tag            Tag      @relation(fields: [tagId], references: [id])
+    tagId          String
+    createdAt      DateTime @default(now())
+    lastModifiedAt DateTime @updatedAt
+}
+
+// Implement this enum when we move from sqlite to postgres
+// TODO update User socialType
+// enum SocialType {
+//     FACEBOOK
+//     TWITTER
+//     GOOGLE
+//     MICROSOFT
+// }

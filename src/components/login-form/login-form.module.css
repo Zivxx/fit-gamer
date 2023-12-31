@@ -1,0 +1,22 @@
+.form__div {
+  width: 300px;
+  margin: 20px;
+  padding: 10px;
+}
+
+.form__header {
+  width: 100%;
+  text-align: left;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.form__input {
+  margin-bottom: 15px;
+}
+
+.form__header {
+  width: 100%;
+  text-align: left;
+  margin-bottom: 15px;
+}

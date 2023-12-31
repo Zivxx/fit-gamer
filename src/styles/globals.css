@@ -1,0 +1,23 @@
+html {
+  background-color: gainsboro;
+}
+
+.color__primary {
+  background-color: #1976d2;
+}
+
+.page__container {
+  margin-top: 20px;
+}
+
+.width__full {
+  width: 100%;
+}
+
+.text__center {
+  text-align: center;
+}
+
+.padding__20 {
+  padding: 20px;
+}

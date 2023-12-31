@@ -1,0 +1,31 @@
+version: 2.1
+orbs:
+  node: circleci/node@5.1.0
+jobs:
+  validate:
+    docker:
+      - image: "mcr.microsoft.com/playwright:v1.37.0-jammy"
+    steps:
+      - checkout
+      - node/install:
+          node-version: "18"
+      - node/install-packages
+      - run:
+          name: Install Playwright
+          command: npx playwright install  
+      - run:
+          name: Run Prettier Check
+          command: npm run tooling:prettier:check
+      - run:
+          name: Run Linter
+          command: npm run tooling:lint:check
+      - run:
+          name: Run Unit Tests
+          command: npm run test:unit
+      - run:
+          name: Run E2E Tests
+          command: npm run test:e2e
+workflows:
+  validate:
+    jobs:
+      - validate

@@ -1,0 +1,17 @@
+
+services:
+  - type: web
+    name: fit-gamer
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fit-gamer-dev-db
+          property: connectionString
+
+databases:
+  - name: fit-gamer-dev-db
+    plan: free
